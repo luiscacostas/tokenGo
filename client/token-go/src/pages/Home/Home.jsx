@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import io from 'socket.io-client';
 import Map from '../../components/Map';
 
-const socket = io('http://192.168.0.28:5000');
+const socket = io('http://localhost:5000');
 
 const Home = () => {
   const [locations, setLocations] = useState([]);//almaceno el objeto de ubicacion
