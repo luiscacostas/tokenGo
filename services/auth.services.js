@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const User = require('../models/user.models');
+require('../config/db_mongo')
 
 const registerUser = async (userData) => {
   try {
