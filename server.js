@@ -44,10 +44,10 @@ app.use('/api/monuments', require('./routes/monument.routes'));
 app.use('/api/routes', require('./routes/routes.routes'));
 app.use('/api/auth', require('./routes/auth.routes.js'));
 
-app.use(express.static(path.join(__dirname, 'client/token-go/dist')));
+app.use(express.static(path.join(__dirname, 'client/build')));
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'client/token-go/dist', 'index.html'));
+  res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
 });
 
 app.use('*',error404);

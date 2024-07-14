@@ -5,7 +5,7 @@ import Map from '../../components/Map';
 const socket = io('http://localhost:5000');
 
 const Home = () => {
-  const [locations, setLocations] = useState([]);//almaceno el objeto de ubicacion
+  const [locations, setLocations] = useState([]);
 
   useEffect(() => {
     if (navigator.geolocation) {
