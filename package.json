@@ -1,26 +1,29 @@
 {
-    "name": "tokengo",
-    "version": "1.0.0",
-    "description": "Proyecto de Full Stack Final - TokenGo",
-    "main": "server.js",
-    "author": "Luis Acosta",
-    "license": "ISC",
-    "dependencies": {
-      "bcrypt": "^5.1.1",
-      "bcryptjs": "^2.4.3",
-      "cors": "^2.8.5",
-      "dotenv": "^16.4.5",
-      "express": "^4.19.2",
-      "express-validator": "^7.1.0",
-      "jsonwebtoken": "^9.0.2",
-      "mongoose": "^8.5.1",
-      "socket.io": "^4.7.5"
-    },
-    "devDependencies": {
-      "morgan": "^1.10.0"
-    },
-    "scripts": {
-      "start": "node server.js",
-      "build": "cd client && npm install && npm run build"
-    }
+  "name": "tokengo",
+  "version": "1.0.0",
+  "description": "Proyecto de Full Stack Final - TokenGo",
+  "main": "server.js",
+  "author": "Luis Acosta",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-validator": "^7.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.5.1",
+    "socket.io": "^4.7.5"
+  },
+  "devDependencies": {
+    "morgan": "^1.10.0"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "build": "cd client && npm install && npm run build"
+  },
+  "engines": {
+    "node": "20.x"
   }
+}
