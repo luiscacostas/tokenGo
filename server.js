@@ -6,15 +6,12 @@ const http = require('http');
 const socketIo = require('socket.io');
 const path = require('path');
 
-
-// Connect to the database
 connectToDatabase();
 
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server)
 
-// Middleware
 app.use(cors());
 app.use(express.json());
 
@@ -23,13 +20,11 @@ const morgan = require('./middlewares/morgan');
 
 app.use(morgan(':method :host :status - :response-time ms :body'));
 
-// Socket.IO configuration
 io.on('connection', (socket) => {
   console.log('New client connected');
   
   socket.on('updateLocation', (data) => {
     console.log('Location data received:', data);
-    // Emit the updated location to all clients (or specific clients as needed)
     socket.broadcast.emit('locationUpdated', data);
   });
 
