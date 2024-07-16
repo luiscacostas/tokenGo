@@ -1,9 +1,11 @@
 import React from 'react';
+import Nav from './Nav';
 
-const Header = () => {
+const Header = ({ isLoggedIn, handleLogout }) => {
   return (
     <header>
-      <h1>Seguimiento de Ubicación en Tiempo Real</h1>
+      <h1>TokenGo</h1>
+      <Nav isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
     </header>
   );
 };

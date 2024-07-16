@@ -1,20 +1,32 @@
 import React from 'react';
-import { MapContainer, TileLayer, Marker, Polyline } from 'react-leaflet';
-import 'leaflet/dist/leaflet.css';
-//import Places from './Places'
+import { MapContainer, TileLayer, Marker, Popup, Polyline } from 'react-leaflet';
 
-const Map = ({ locations }) => {
+const Map = ({ locations, placesCoords = [] }) => {
+  console.log(locations);
+  console.log(placesCoords);
+  
   return (
-    <MapContainer center={[51.505, -0.09]} zoom={13} style={{ height: '100vh', width: '100%' }}>
-      <TileLayer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-      />
-      {locations.map((location, index) => (
-        <Marker key={index} position={[location.latitude, location.longitude]} />
-      ))}
-      <Polyline positions={locations.map(location => [location.latitude, location.longitude])} />
-    </MapContainer>
+    <div className="map-container">
+      <MapContainer center={[40.4168, -3.7038]} zoom={12} id="map" style={{ height: "100%", width: "100%" }}>
+        <TileLayer
+          url='https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png'
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        />
+        {locations.map((location, index) => (
+          <Marker key={index} position={[location.latitude, location.longitude]}>
+            <Popup>Current Location</Popup>
+          </Marker>
+        ))}
+        {placesCoords.map((place, index) => (
+          <Marker key={index} position={[place.lat, place.lon]}>
+            <Popup>{place.name}</Popup>
+          </Marker>
+        ))}
+        {locations.length > 1 && (
+          <Polyline positions={locations.map(loc => [loc.latitude, loc.longitude])} />
+        )}
+      </MapContainer>
+    </div>
   );
 };
 
