@@ -1,23 +1,9 @@
 const Monument = require('../models/monument.models');
+const User = require('../models/user.models');
 
-/**
- * @exports services
- * @autor Luis Acosta
- * @namespace MonumentService
- */
-
-/**
- * Descripción: Obtiene todos los monumentos
- * @memberof MonumentService 
- * @method getAllMonuments 
- * @async 
- * @return {Array} - Lista de todos los monumentos
- * @throws {Error} Error al obtener los monumentos
- */
 const getAllMonuments = async () => {
   try {
     const allMonuments = await Monument.find();
-    console.log(allMonuments)
     return allMonuments;
   } catch (error) {
     console.error('Error al obtener los monumentos:', error);
@@ -25,19 +11,9 @@ const getAllMonuments = async () => {
   }
 };
 
-/**
- * Descripción: Obtiene un monumento por su nombre
- * @memberof MonumentService 
- * @method getMonumentByName 
- * @async 
- * @param {string} monumentName - El nombre del monumento a buscar
- * @return {Object} - El objeto del monumento encontrado
- * @throws {Error} Error al obtener el monumento
- */
 const getMonumentByName = async (monumentName) => {
   try {
-    const monument = await Monument.find({ name: monumentName });
-    console.log(monument)
+    const monument = await Monument.findOne({ name: monumentName });
     if (!monument) {
       throw new Error('Monumento no encontrado');
     }
@@ -48,35 +24,27 @@ const getMonumentByName = async (monumentName) => {
   }
 };
 
-/**
- * Descripción: Crea un nuevo monumento
- * @memberof MonumentService 
- * @method createMonument 
- * @async 
- * @param {Object} monumentData - Datos del nuevo monumento
- * @return {Object} - El objeto del monumento creado
- * @throws {Error} Error al crear el monumento
- */
-const createMonument = async (monumentData) => {
+const createMonument = async (name, city, latitude, longitude, icon) => {
   try {
-    const monument = new Monument(monumentData);
-    return await monument.save();
+    const monumentData = {
+      name,
+      city,
+      location: {
+        type: 'Point',
+        coordinates: [latitude, longitude]
+      },
+      icon
+    };
+    
+    const newMonument = new Monument(monumentData);
+    await newMonument.save();
+    return newMonument;
   } catch (error) {
     console.error('Error al crear el monumento:', error);
     throw new Error('Error al crear el monumento');
   }
 };
 
-/**
- * Descripción: Actualiza un monumento
- * @memberof MonumentService 
- * @method updateMonument 
- * @async 
- * @param {string} monumentId - ID del monumento
- * @param {Object} updateData - Datos a actualizar
- * @return {Object} - El objeto del monumento actualizado
- * @throws {Error} Error al actualizar el monumento
- */
 const updateMonument = async (monumentId, updateData) => {
   try {
     const updatedMonument = await Monument.findByIdAndUpdate(monumentId, updateData, { new: true });
@@ -90,15 +58,6 @@ const updateMonument = async (monumentId, updateData) => {
   }
 };
 
-/**
- * Descripción: Desactiva un monumento en lugar de eliminarlo físicamente
- * @memberof MonumentService 
- * @method desactivateMonument 
- * @async 
- * @param {string} monumentId - ID del monumento a desactivar
- * @return {Object} - El objeto del monumento desactivado
- * @throws {Error} Error al desactivar el monumento
- */
 const desactivateMonument = async (monumentId) => {
   try {
     const updatedMonument = await Monument.findByIdAndUpdate(monumentId, { isActive: false }, { new: true });
@@ -112,22 +71,57 @@ const desactivateMonument = async (monumentId) => {
   }
 };
 
+const captureMonument = async (monumentId, userId) => {
+  const monument = await Monument.findById(monumentId);
+  if (!monument) {
+    throw new Error('Monument not found');
+  }
+
+  const user = await User.findById(userId);
+  if (!user) {
+    throw new Error('User not found');
+  }
+
+  const alreadyCaptured = user.tokens.some(token => token.monument_id.toString() === monumentId);
+  if (alreadyCaptured) {
+    throw new Error('Monument already captured');
+  }
+
+  user.tokens.push({ monument_id: monumentId, collected_at: new Date() });
+  await user.save();
+
+  return monument;
+};
+
 module.exports = {
   getAllMonuments,
   getMonumentByName,
   createMonument,
   updateMonument,
-  desactivateMonument
+  desactivateMonument,
+  captureMonument
 };
 
-// const newMonument = {
-//     name: 'Camp Nou Dead',
-//     city: 'Barcelonita',
-//     isActive:true,
-//     icon: 'https://example.com/icons/eiffel_tower.png'
-//   };
-//createMonument(newMonument)
-//getAllMonuments()
-//getMonumentByName('Santiago Bernabeu')
-//desactivateMonument('6692bb39235fdae05d119afe')
-//updateMonument('6692bb39235fdae05d119afe',newMonument)
+// const saveMonument = async () => {
+//   try {
+//     const monument = new Monument(newMonument);
+//     const savedMonument = await monument.save();
+//     console.log('Monument saved:', savedMonument);
+//   } catch (error) {
+//     console.error('Error saving monument:', error.message);
+//   } finally {
+//     mongoose.connection.close();
+//   }
+// };
+// saveMonument();
+
+
+// const newMonumentData = {
+//   name: "100 Montaditos",
+//   city: "Madrid",
+//   location: {
+//           type: 'Point',
+//           coordinates: [48.415363, -7.807398]
+//         },
+//   icon: "https://example.com/icons/plaza_mayor.png"
+// }

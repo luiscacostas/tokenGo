@@ -2,12 +2,9 @@ import React from 'react';
 import { MapContainer, TileLayer, Marker, Popup, Polyline } from 'react-leaflet';
 
 const Map = ({ locations, placesCoords = [] }) => {
-  console.log(locations);
-  console.log(placesCoords);
-  
   return (
     <div className="map-container">
-      <MapContainer center={[40.4168, -3.7038]} zoom={12} id="map" style={{ height: "100%", width: "100%" }}>
+      <MapContainer center={[40.4168, -3.7038]} zoom={12} id="map" style={{ height: "50vh", width: "100%" }}>
         <TileLayer
           url='https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png'
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

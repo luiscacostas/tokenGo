@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Home from './pages/Home';
-import Login from './components/Auth/Login';
-import Register from './components/Auth/Register';
+import Login from './pages/Home/Login';
+import Register from './pages/Register';
 import Header from './components/Header/Header';
 
 const App = () => {

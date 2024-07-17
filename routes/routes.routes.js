@@ -5,9 +5,9 @@ const authMiddleware = require('../middlewares/auth');
 const {createRouteValidation} = require('../validators/routes.validators')
 const validate = require('../middlewares/validate')
 
-router.get('/', authMiddleware, routeController.getAllRoutes);
+router.get('/', routeController.getAllRoutes);
 
-router.get('/user/:userId',authMiddleware, routeController.getRoutesByUser);
+router.get('/user/:userId', routeController.getRoutesByUser);
 
 router.post(
     '/',

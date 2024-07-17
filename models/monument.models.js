@@ -42,26 +42,4 @@ const Monument = mongoose.model('Monument', MonumentSchema);
 
 module.exports = Monument;
 
-// const newMonument = {
-//     name: 'Eiffel Tower',
-//     city: 'Paris',
-//     location: {
-//       type: 'Point',
-//       coordinates: [2.2945, 48.8584]
-//     },
-//     icon: 'https://example.com/icons/eiffel_tower.png'
-//   };
 
-//   const saveMonument = async () => {
-//     try {
-//       const monument = new Monument(newMonument);
-//       const savedMonument = await monument.save();
-//       console.log('Monument saved:', savedMonument);
-//     } catch (error) {
-//       console.error('Error saving monument:', error.message);
-//     } finally {
-//       mongoose.connection.close();
-//     }
-//   };
-  
-//   saveMonument();

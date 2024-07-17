@@ -23,12 +23,14 @@ const getMonumentByName = async (req, res) => {
 };
 
 const createMonument = async (req, res) => {
+  const { name, city, latitude, longitude, icon } = req.body;
+
   try {
-    const monumentData = req.body;
-    const monument = await monumentService.createMonument(monumentData);
-    res.status(201).json(monument);
+    const result = await monumentService.createMonument(name, city, latitude, longitude, icon);
+    res.status(201).json({ message: 'Monument añadido', monument: result });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('Error añadiendo monumento:', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 
@@ -59,10 +61,24 @@ const desactivateMonument = async (req, res) => {
   }
 };
 
+const captureMonument = async (req, res) => {
+  const { monumentId } = req.body;
+  const userId = req.user.id;
+
+  try {
+    const result = await monumentService.captureMonument(monumentId, userId);
+    res.status(200).json({ message: 'Monument captured', monument: result });
+  } catch (error) {
+    console.error('Error capturing monument:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
 module.exports = {
   getAllMonuments,
   getMonumentByName,
   createMonument,
   updateMonument,
-  desactivateMonument
+  desactivateMonument,
+  captureMonument
 };

@@ -46,14 +46,17 @@ const Places = ({ setPlacesCoords }) => {
         const data = await resp.json();
         const lat = data.lat;
         const lon = data.lon;
-        console.log(lat, lon)
         const respTwo = await fetch(`https://api.opentripmap.com/0.1/en/places/radius?radius=${radius}&lon=${lon}&lat=${lat}&apikey=${apiKey}`);
         const dataTwo = await respTwo.json();
-        console.log(dataTwo)
-        
+
+        console.log("Fetched places:", dataTwo.features);
+
         const filteredResults = dataTwo.features.filter(feature => 
           touristPlaces.includes(feature.properties.name)
         );
+
+        console.log("Filtered places:", filteredResults);
+
         const limitedResults = filteredResults.slice(0, 30);
 
         setPlacesCoords(limitedResults.map(feature => ({
