@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 require('../config/db_mongo');
-// const bcrypt = require('bcrypt');
 
 const TokenSchema = new mongoose.Schema({
   monument_id: { 
@@ -71,6 +70,10 @@ const objSchema = {
 
 const UserSchema = mongoose.Schema(objSchema, { timestamps: true });
 
+const User = mongoose.model('User', UserSchema);
+
+module.exports = User;
+
 // UserSchema.pre('save', async function(next) {
 //     if (!this.isModified('password')) {
 //       return next();
@@ -87,10 +90,6 @@ const UserSchema = mongoose.Schema(objSchema, { timestamps: true });
 //   UserSchema.methods.comparePassword = async function(candidatePassword) {
 //     return await bcrypt.compare(candidatePassword, this.password);
 //   };
-  
-const User = mongoose.model('User', UserSchema);
-
-module.exports = User;
 
 // const newUser = {
 //     name:'Luis Carlos',
