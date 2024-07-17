@@ -100,8 +100,7 @@ module.exports = {
   createMonument,
   updateMonument,
   desactivateMonument,
-  captureMonument,
-  getAllMonumentsForUser
+  captureMonument
 };
 
 // const saveMonument = async () => {
