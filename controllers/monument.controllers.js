@@ -73,6 +73,15 @@ const captureMonument = async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 };
+const getAllMonumentsForUser = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const { allMonuments, capturedMonumentIds } = await monumentService.getAllMonumentsForUser(userId);
+    res.status(200).json({ allMonuments, capturedMonumentIds });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
 module.exports = {
   getAllMonuments,
@@ -80,5 +89,6 @@ module.exports = {
   createMonument,
   updateMonument,
   desactivateMonument,
-  captureMonument
+  captureMonument,
+  getAllMonumentsForUser
 };

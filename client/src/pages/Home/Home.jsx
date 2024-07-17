@@ -99,6 +99,7 @@ const Home = () => {
       const data = await response.json();
       console.log('Monument captured:', data);
       setCapturedMonuments((prevMonuments) => [...prevMonuments, data.monument]);
+      setPlacesCoords((prevCoords) => prevCoords.filter(monument => monument.id !== monumentId));
     } catch (error) {
       console.error('Error capturing monument:', error);
       alert(`Error capturing monument: ${error.message}`);

@@ -93,13 +93,28 @@ const captureMonument = async (monumentId, userId) => {
   return monument;
 };
 
+const getAllMonumentsForUser = async (userId) => {
+  try {
+    const user = await User.findById(userId).populate('tokens.monument_id');
+    const capturedMonumentIds = user.tokens.map(token => token.monument_id._id);
+
+    const allMonuments = await Monument.find();
+
+    return { allMonuments, capturedMonumentIds };
+  } catch (error) {
+    console.error('Error al obtener los monumentos para el usuario:', error);
+    throw new Error('Error al obtener los monumentos para el usuario');
+  }
+};
+
 module.exports = {
   getAllMonuments,
   getMonumentByName,
   createMonument,
   updateMonument,
   desactivateMonument,
-  captureMonument
+  captureMonument,
+  getAllMonumentsForUser
 };
 
 // const saveMonument = async () => {
