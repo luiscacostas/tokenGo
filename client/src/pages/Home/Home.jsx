@@ -20,8 +20,8 @@ const Home = () => {
         const response = await fetch('https://tokengo-production.up.railway.app/api/monuments');
         const data = await response.json();
         const monuments = data.map(monument => ({
-          lat: monument.location.coordinates[1],
-          lon: monument.location.coordinates[0],
+          lat: monument.location.coordinates[0],
+          lon: monument.location.coordinates[1],
           name: monument.name,
           id: monument._id
         }));
@@ -108,8 +108,8 @@ const Home = () => {
     setPlacesCoords((prevCoords) => [
       ...prevCoords,
       {
-        lat: newMonument.location.coordinates[1],
-        lon: newMonument.location.coordinates[0],
+        lat: newMonument.location.coordinates[0],
+        lon: newMonument.location.coordinates[1],
         name: newMonument.name,
         id: newMonument._id
       }
