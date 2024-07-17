@@ -1,10 +1,20 @@
 const Monument = require('../models/monument.models');
 const User = require('../models/user.models');
 
-const getAllMonuments = async () => {
+const getAllMonuments = async (userId) => {
   try {
-    const allMonuments = await Monument.find({});
-    return allMonuments;
+    const user = await User.findById(userId);
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    const capturedMonumentIds = user.tokens.map(token => token.monument_id.toString());
+
+    const allMonuments = await Monument.find();
+    const availableMonuments = allMonuments.filter(monument => !capturedMonumentIds.includes(monument._id.toString()));
+    const capturedMonuments = allMonuments.filter(monument => capturedMonumentIds.includes(monument._id.toString()));
+
+    return { availableMonuments, capturedMonuments };
   } catch (error) {
     console.error('Error al obtener los monumentos:', error);
     throw new Error('Error al obtener los monumentos');
@@ -93,10 +103,22 @@ const captureMonument = async (monumentId, userId) => {
   return monument;
 };
 
+const getMonumentsForUser = async (userId) => {
+  const user = await User.findById(userId).populate('tokens.monument_id');
+  const capturedMonumentIds = user.tokens.map(token => token.monument_id._id.toString());
+  const allMonuments = await Monument.find();
+
+  return allMonuments.map(monument => ({
+    ...monument._doc,
+    isCaptured: capturedMonumentIds.includes(monument._id.toString())
+  }));
+};
+
 
 module.exports = {
   getAllMonuments,
   getMonumentByName,
+  getMonumentsForUser,
   createMonument,
   updateMonument,
   desactivateMonument,

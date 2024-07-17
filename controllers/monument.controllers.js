@@ -1,13 +1,12 @@
 const monumentService = require('../services/monument.services');
 
 const getAllMonuments = async (req, res) => {
-  //const userId = req.user.id;
+  const userId = req.user.id;
   try {
-    const monuments = await monumentService.getAllMonuments();
+    const monuments = await monumentService.getAllMonuments(userId);
     res.status(200).json(monuments);
   } catch (error) {
-    console.error('Error fetching monuments:', error);
-    res.status(500).json({ error: 'Error fetching monuments' });
+    res.status(500).json({ error: error.message });
   }
 };
 
@@ -50,6 +49,16 @@ const updateMonument = async (req, res) => {
   }
 };
 
+const getMonumentsForUser = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const monuments = await monumentService.getMonumentsForUser(userId);
+    res.status(200).json(monuments);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 const desactivateMonument = async (req, res) => {
   const { monumentId } = req.params;
   try {
@@ -79,6 +88,7 @@ const captureMonument = async (req, res) => {
 module.exports = {
   getAllMonuments,
   getMonumentByName,
+  getMonumentsForUser,
   createMonument,
   updateMonument,
   desactivateMonument,
