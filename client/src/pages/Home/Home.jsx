@@ -6,7 +6,7 @@ import FormMonument from '../../components/FormMonument';
 import { isPointWithinRadius } from 'geolib';
 import AuthContext from '../../context/AuthContext';
 
-const socket = io('https://agile-vitality-tokengo.up.railway.app/');
+const socket = io('https://tokengo-z0d3.onrender.com');
 
 const Home = () => {
   const [locations, setLocations] = useState([]);
@@ -17,20 +17,18 @@ const Home = () => {
   useEffect(() => {
     const fetchMonuments = async () => {
       try {
-        const response = await fetch('https://agile-vitality-tokengo.up.railway.app/api/monuments', {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-          },
-        });
+        const response = await fetch('https://tokengo-z0d3.onrender.com/api/monuments/');
+        if (!response.ok) {
+          throw new Error('Error fetching monuments');
+        }
         const data = await response.json();
-        const monuments = data.filter(monument => !monument.isCaptured).map(monument => ({
-          lat: monument.location.coordinates[0],
-          lon: monument.location.coordinates[1],
+        const monuments = data.map(monument => ({
+          lat: monument.location.coordinates[1], // latitud en el índice 1
+          lon: monument.location.coordinates[0], // longitud en el índice 0
           name: monument.name,
-          id: monument._id,
+          id: monument._id
         }));
         setPlacesCoords(monuments);
-        setCapturedMonuments(data.filter(monument => monument.isCaptured));
       } catch (error) {
         console.error('Error fetching monuments:', error);
       }
@@ -76,7 +74,6 @@ const Home = () => {
         );
 
         if (isWithinRadius) {
-          console.log(place.id)
           captureMonument(place.id);
         }
       });
@@ -87,7 +84,7 @@ const Home = () => {
 
   const captureMonument = async (monumentId) => {
     try {
-      const response = await fetch('https://agile-vitality-tokengo.up.railway.app/api/monuments/capture', {
+      const response = await fetch('https://tokengo-z0d3.onrender.com/api/monuments/capture', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -102,7 +99,6 @@ const Home = () => {
       }
 
       const data = await response.json();
-      console.log('Monument captured:', data);
       setCapturedMonuments((prevMonuments) => [...prevMonuments, data.monument]);
       setPlacesCoords((prevCoords) => prevCoords.filter(monument => monument.id !== monumentId));
     } catch (error) {
@@ -115,8 +111,8 @@ const Home = () => {
     setPlacesCoords((prevCoords) => [
       ...prevCoords,
       {
-        lat: newMonument.location.coordinates[0],
-        lon: newMonument.location.coordinates[1],
+        lat: newMonument.location.coordinates[1], // latitud en el índice 1
+        lon: newMonument.location.coordinates[0], // longitud en el índice 0
         name: newMonument.name,
         id: newMonument._id
       }
