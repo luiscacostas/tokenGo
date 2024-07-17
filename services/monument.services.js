@@ -1,14 +1,15 @@
 const Monument = require('../models/monument.models');
 const User = require('../models/user.models');
 
-const getAllMonuments = async () => {
-  try {
-    const allMonuments = await Monument.find();
-    return allMonuments;
-  } catch (error) {
-    console.error('Error al obtener los monumentos:', error);
-    throw new Error('Error al obtener los monumentos');
-  }
+const getAllMonuments = async (userId) => {
+  const user = await User.findById(userId);
+  const capturedMonumentIds = user.tokens.map(token => token.monument_id);
+
+  const allMonuments = await Monument.find();
+  return allMonuments.map(monument => ({
+    ...monument.toObject(),
+    isCaptured: capturedMonumentIds.includes(monument._id.toString()),
+  }));
 };
 
 const getMonumentByName = async (monumentName) => {

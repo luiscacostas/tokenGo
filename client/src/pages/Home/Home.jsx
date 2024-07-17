@@ -6,7 +6,7 @@ import FormMonument from '../../components/FormMonument';
 import { isPointWithinRadius } from 'geolib';
 import AuthContext from '../../context/AuthContext';
 
-const socket = io('https://tokengo-production.up.railway.app');
+const socket = io('https://agile-vitality-tokengo.up.railway.app/');
 
 const Home = () => {
   const [locations, setLocations] = useState([]);
@@ -17,15 +17,20 @@ const Home = () => {
   useEffect(() => {
     const fetchMonuments = async () => {
       try {
-        const response = await fetch('https://tokengo-production.up.railway.app/api/monuments');
+        const response = await fetch('https://agile-vitality-tokengo.up.railway.app/api/monuments', {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
         const data = await response.json();
-        const monuments = data.map(monument => ({
+        const monuments = data.filter(monument => !monument.isCaptured).map(monument => ({
           lat: monument.location.coordinates[0],
           lon: monument.location.coordinates[1],
           name: monument.name,
-          id: monument._id
+          id: monument._id,
         }));
         setPlacesCoords(monuments);
+        setCapturedMonuments(data.filter(monument => monument.isCaptured));
       } catch (error) {
         console.error('Error fetching monuments:', error);
       }
@@ -52,7 +57,7 @@ const Home = () => {
       navigator.geolocation.clearWatch(watchId);
       socket.off('locationUpdated');
     };
-  }, []);
+  }, [token]);
 
   useEffect(() => {
     const checkProximity = () => {
@@ -82,7 +87,7 @@ const Home = () => {
 
   const captureMonument = async (monumentId) => {
     try {
-      const response = await fetch('https://tokengo-production.up.railway.app/api/monuments/capture', {
+      const response = await fetch('https://agile-vitality-tokengo.up.railway.app/api/monuments/capture', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

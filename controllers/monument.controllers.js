@@ -2,7 +2,8 @@ const monumentService = require('../services/monument.services');
 
 const getAllMonuments = async (req, res) => {
   try {
-    const monuments = await monumentService.getAllMonuments();
+    const userId = req.user._id;
+    const monuments = await monumentService.getAllMonuments(userId);
     res.status(200).json(monuments);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -63,14 +64,14 @@ const desactivateMonument = async (req, res) => {
 
 const captureMonument = async (req, res) => {
   const { monumentId } = req.body;
-  const userId = req.user._id; 
+  const userId = req.user._id;
 
   try {
     const result = await monumentService.captureMonument(monumentId, userId);
     res.status(200).json({ message: 'Monument captured', monument: result });
   } catch (error) {
     console.error('Error capturing monument:', error);
-    res.status(500).json({ message: 'Internal server error' });
+    res.status(500).json({ message: error.message || 'Internal server error' });
   }
 };
 const getAllMonumentsForUser = async (req, res) => {

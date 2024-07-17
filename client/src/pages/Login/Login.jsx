@@ -9,7 +9,7 @@ const Login = ({ setIsLoggedIn }) => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('https://tokengo-production.up.railway.app/api/auth/login', {
+      const response = await fetch('https://agile-vitality-tokengo.up.railway.app/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
