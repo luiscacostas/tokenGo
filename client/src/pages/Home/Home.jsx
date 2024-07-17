@@ -71,6 +71,7 @@ const Home = () => {
         );
 
         if (isWithinRadius) {
+          console.log(place.id)
           captureMonument(place.id);
         }
       });

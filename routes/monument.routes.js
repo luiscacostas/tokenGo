@@ -7,7 +7,7 @@ const validate = require('../middlewares/validate');
 
 router.get('/', monumentController.getAllMonuments);
 router.get('/:name', monumentController.getMonumentByName);
-router.post('/capture', monumentController.captureMonument);
+router.post('/capture', authMiddleware, monumentController.captureMonument);
 router.post('/add', monumentController.createMonument);
 router.put('/:monumentId', authMiddleware, monumentController.updateMonument);
 router.delete('/desactivate/:monumentId', authMiddleware, monumentController.desactivateMonument);

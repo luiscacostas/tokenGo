@@ -63,7 +63,7 @@ const desactivateMonument = async (req, res) => {
 
 const captureMonument = async (req, res) => {
   const { monumentId } = req.body;
-  const userId = req.user.id;
+  const userId = req.user._id; 
 
   try {
     const result = await monumentService.captureMonument(monumentId, userId);
