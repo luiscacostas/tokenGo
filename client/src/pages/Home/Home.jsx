@@ -15,6 +15,24 @@ const Home = () => {
   const { token } = useContext(AuthContext);
 
   useEffect(() => {
+    const fetchMonuments = async () => {
+      try {
+        const response = await fetch('https://tokengo-production.up.railway.app/api/monuments');
+        const data = await response.json();
+        const monuments = data.map(monument => ({
+          lat: monument.location.coordinates[1],
+          lon: monument.location.coordinates[0],
+          name: monument.name,
+          id: monument._id
+        }));
+        setPlacesCoords(monuments);
+      } catch (error) {
+        console.error('Error fetching monuments:', error);
+      }
+    };
+
+    fetchMonuments();
+
     const watchId = navigator.geolocation.watchPosition(
       (position) => {
         const { latitude, longitude } = position.coords;
@@ -42,18 +60,18 @@ const Home = () => {
       if (!currentLocation) return;
 
       placesCoords.forEach((place) => {
-        if (!place.geometry || !place.geometry.coordinates || !place.properties || !place.properties.xid) {
-          return;
+        if (!place.lat || !place.lon || !place.id) {
+          return; 
         }
 
         const isWithinRadius = isPointWithinRadius(
           { latitude: currentLocation.latitude, longitude: currentLocation.longitude },
-          { latitude: place.geometry.coordinates[1], longitude: place.geometry.coordinates[0] },
+          { latitude: place.lat, longitude: place.lon },
           100 
         );
 
         if (isWithinRadius) {
-          captureMonument(place.properties.xid);
+          captureMonument(place.id);
         }
       });
     };
@@ -87,17 +105,13 @@ const Home = () => {
   };
 
   const handleMonumentAdded = (newMonument) => {
-    console.log(newMonument);
     setPlacesCoords((prevCoords) => [
       ...prevCoords,
       {
-        geometry: {
-          coordinates: [newMonument.location.coordinates[1], newMonument.location.coordinates[0]]
-        },
-        properties: {
-          xid: newMonument._id,
-          name: newMonument.name
-        }
+        lat: newMonument.location.coordinates[1],
+        lon: newMonument.location.coordinates[0],
+        name: newMonument.name,
+        id: newMonument._id
       }
     ]);
   };

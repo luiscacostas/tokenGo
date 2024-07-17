@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import AuthContext from '../../context/AuthContext'
+import AuthContext from '../../context/AuthContext';
 
 const FormMonument = ({ onMonumentAdded }) => {
   const [name, setName] = useState('');
@@ -12,13 +12,7 @@ const FormMonument = ({ onMonumentAdded }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const newMonument = {
-      name,
-      city,
-      latitude: parseFloat(latitude),
-      longitude: parseFloat(longitude),
-      icon
-    };
+    const newMonument = { name, city, latitude: parseFloat(latitude), longitude: parseFloat(longitude), icon };
 
     try {
       const response = await fetch('https://tokengo-production.up.railway.app/api/monuments/add', {
@@ -32,10 +26,11 @@ const FormMonument = ({ onMonumentAdded }) => {
       
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.message || 'Error adding monument');
+        throw new Error(errorData.message || 'Error adding new monument');
       }
 
       const data = await response.json();
+      console.log(data)
       onMonumentAdded(data.monument);
     } catch (error) {
       console.error('Error adding monument:', error);
