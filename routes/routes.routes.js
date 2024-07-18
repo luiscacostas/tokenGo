@@ -11,9 +11,6 @@ router.get('/user/:userId', routeController.getRoutesByUser);
 
 router.post(
     '/',
-    authMiddleware,
-    createRouteValidation,
-    validate, 
     routeController.createRoute);
 
 module.exports = router;
