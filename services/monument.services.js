@@ -96,7 +96,7 @@ const deactivateMonument = async (monumentId) => {
   }
 };
 
-const captureMonument = async (monumentId, userId) => {
+const captureMonument = async(userId, monumentId) => {
   const monument = await Monument.findById(monumentId);
   if (!monument) {
     throw new Error('Monument not found');
@@ -107,12 +107,26 @@ const captureMonument = async (monumentId, userId) => {
     throw new Error('User not found');
   }
 
-  const alreadyCaptured = user.tokens.some(token => token.monument_id.toString() === monumentId);
-  if (alreadyCaptured) {
-    throw new Error('Monument already captured');
+  if (user.tokens.some(token => token.monument_id.toString() === monumentId)) {
+    throw new Error('Monument already captured by this user');
   }
 
-  user.tokens.push({ monument_id: monumentId, collected_at: new Date() });
+  user.tokens.push({
+    monument_id: monumentId,
+    collected_at: new Date()
+  });
+
+  let cityProgress = user.progress.find(p => p.city === monument.city);
+  if (!cityProgress) {
+    cityProgress = {
+      city: monument.city,
+      tokens_collected: 0,
+      total_tokens: await Monument.countDocuments({ city: monument.city })
+    };
+    user.progress.push(cityProgress);
+  }
+  cityProgress.tokens_collected += 1;
+
   await user.save();
 
   return monument;
@@ -135,9 +149,25 @@ const getMonumentsForUser = async (userId) => {
   }
 };
 
+const getAvailableMonuments = async (userId) => {
+  const user = await User.findById(userId);
+  const capturedMonumentIds = user.tokens.map(token => token.monument_id);
+  return await Monument.find({ 
+    _id: { $nin: capturedMonumentIds },
+    isActive: true 
+  });
+};
+
+const getCapturedMonuments = async (userId) => {
+  const user = await User.findById(userId).populate('tokens.monument_id');
+  return user.tokens.map(token => token.monument_id);
+};
+
 module.exports = {
   getAllMonuments,
   getMonumentByName,
+  getAvailableMonuments,
+  getCapturedMonuments,
   getMonumentsForUser,
   createMonument,
   updateMonument,

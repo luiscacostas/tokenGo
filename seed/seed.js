@@ -15,7 +15,7 @@ const seedMonuments = [
     city: 'Madrid',
     location: {
       type: 'Point',
-      coordinates: [40.415363, -3.707398]
+      coordinates: [-3.707398, 40.415363]
     },
     icon: 'https://example.com/icons/plaza_mayor.png',
     isActive: true
@@ -25,7 +25,7 @@ const seedMonuments = [
     city: 'Madrid',
     location: {
       type: 'Point',
-      coordinates: [40.417957, -3.713146]
+      coordinates: [-3.713146, 40.417957]
     },
     icon: 'https://example.com/icons/palacio_real.png',
     isActive: true
@@ -35,7 +35,7 @@ const seedMonuments = [
     city: 'Madrid',
     location: {
       type: 'Point',
-      coordinates: [40.413793, -3.692127]
+      coordinates: [-3.692127, 40.413793]
     },
     icon: 'https://example.com/icons/museo_prado.png',
     isActive: true
@@ -45,7 +45,7 @@ const seedMonuments = [
     city: 'Madrid',
     location: {
       type: 'Point',
-      coordinates: [40.415260, -3.683247]
+      coordinates: [-3.683247, 40.415260]
     },
     icon: 'https://example.com/icons/parque_retiro.png',
     isActive: true
@@ -55,7 +55,7 @@ const seedMonuments = [
     city: 'Madrid',
     location: {
       type: 'Point',
-      coordinates: [40.416775, -3.703790]
+      coordinates: [-3.703790, 40.416775]
     },
     icon: 'https://example.com/icons/puerta_sol.png',
     isActive: true
@@ -65,7 +65,7 @@ const seedMonuments = [
     city: 'Madrid',
     location: {
       type: 'Point',
-      coordinates: [40.453054, -3.688344]
+      coordinates: [-3.688344, 40.453054]
     },
     icon: 'https://example.com/icons/bernabeu.png',
     isActive: true
@@ -75,7 +75,7 @@ const seedMonuments = [
     city: 'Madrid',
     location: {
       type: 'Point',
-      coordinates: [40.424018, -3.718750]
+      coordinates: [-3.718750, 40.424018]
     },
     icon: 'https://example.com/icons/templo_debod.png',
     isActive: true
@@ -85,7 +85,7 @@ const seedMonuments = [
     city: 'Madrid',
     location: {
       type: 'Point',
-      coordinates: [40.415345, -3.714312]
+      coordinates: [-3.714312, 40.415345]
     },
     icon: 'https://example.com/icons/almudena.png',
     isActive: true
@@ -95,7 +95,7 @@ const seedMonuments = [
     city: 'Madrid',
     location: {
       type: 'Point',
-      coordinates: [40.408735, -3.694157]
+      coordinates: [-3.694157, 40.408735]
     },
     icon: 'https://example.com/icons/reina_sofia.png',
     isActive: true
@@ -105,7 +105,7 @@ const seedMonuments = [
     city: 'Madrid',
     location: {
       type: 'Point',
-      coordinates: [40.419563, -3.693349]
+      coordinates: [-3.693349, 40.419563]
     },
     icon: 'https://example.com/icons/cibeles.png',
     isActive: true
@@ -115,7 +115,7 @@ const seedMonuments = [
     city: 'Madrid',
     location: {
       type: 'Point',
-      coordinates: [40.416392, -3.694481]
+      coordinates: [-3.694481, 40.416392]
     },
     icon: 'https://example.com/icons/thyssen.png',
     isActive: true
@@ -125,7 +125,7 @@ const seedMonuments = [
     city: 'Madrid',
     location: {
       type: 'Point',
-      coordinates: [40.408513, -3.707228]
+      coordinates: [-3.707228, 40.408513]
     },
     icon: 'https://example.com/icons/rastro.png',
     isActive: true
@@ -135,7 +135,7 @@ const seedMonuments = [
     city: 'Madrid',
     location: {
       type: 'Point',
-      coordinates: [40.419006, -3.688317]
+      coordinates: [-3.688317, 40.419006]
     },
     icon: 'https://example.com/icons/puerta_alcala.png',
     isActive: true
@@ -145,7 +145,7 @@ const seedMonuments = [
     city: 'Madrid',
     location: {
       type: 'Point',
-      coordinates: [40.418540, -3.745715]
+      coordinates: [-3.745715, 40.418540]
     },
     icon: 'https://example.com/icons/casa_campo.png',
     isActive: true
@@ -155,7 +155,7 @@ const seedMonuments = [
     city: 'Madrid',
     location: {
       type: 'Point',
-      coordinates: [40.415413, -3.708011]
+      coordinates: [-3.708011, 40.415413]
     },
     icon: 'https://example.com/icons/san_miguel.png',
     isActive: true
@@ -165,7 +165,7 @@ const seedMonuments = [
     city: 'Madrid',
     location: {
       type: 'Point',
-      coordinates: [40.411905, -3.691320]
+      coordinates: [-3.691320, 40.411905]
     },
     icon: 'https://example.com/icons/jardin_botanico.png',
     isActive: true
@@ -175,7 +175,7 @@ const seedMonuments = [
     city: 'Madrid',
     location: {
       type: 'Point',
-      coordinates: [40.418889, -3.710278]
+      coordinates: [-3.710278, 40.418889]
     },
     icon: 'https://example.com/icons/teatro_real.png',
     isActive: true
@@ -185,7 +185,7 @@ const seedMonuments = [
     city: 'Madrid',
     location: {
       type: 'Point',
-      coordinates: [40.422222, -3.689444]
+      coordinates: [-3.689444, 40.422222]
     },
     icon: 'https://example.com/icons/arqueologico.png',
     isActive: true
@@ -195,7 +195,7 @@ const seedMonuments = [
     city: 'Madrid',
     location: {
       type: 'Point',
-      coordinates: [40.423333, -3.712222]
+      coordinates: [-3.712222, 40.423333]
     },
     icon: 'https://example.com/icons/plaza_espana.png',
     isActive: true
@@ -205,7 +205,7 @@ const seedMonuments = [
     city: 'Madrid',
     location: {
       type: 'Point',
-      coordinates: [40.409100, -3.763400]
+      coordinates: [-3.763400, 40.409100]
     },
     icon: 'https://example.com/icons/zoo.png',
     isActive: true
@@ -215,7 +215,7 @@ const seedMonuments = [
     city: 'Madrid',
     location: {
       type: 'Point',
-      coordinates: [40.391834, -3.698156]
+      coordinates: [-3.698156, 40.391834]
     },
     icon: 'https://example.com/icons/matadero.png',
     isActive: true
@@ -225,7 +225,7 @@ const seedMonuments = [
     city: 'Madrid',
     location: {
       type: 'Point',
-      coordinates: [40.413055, -3.682564]
+      coordinates: [-3.682564, 40.413055]
     },
     icon: 'https://example.com/icons/palacio_cristal.png',
     isActive: true
@@ -235,7 +235,7 @@ const seedMonuments = [
     city: 'Madrid',
     location: {
       type: 'Point',
-      coordinates: [40.411089, -3.745161]
+      coordinates: [-3.745161, 40.411089]
     },
     icon: 'https://example.com/icons/parque_atracciones.png',
     isActive: true
@@ -245,7 +245,7 @@ const seedMonuments = [
     city: 'Madrid',
     location: {
       type: 'Point',
-      coordinates: [40.409618, -3.693840]
+      coordinates: [-3.693840, 40.409618]
     },
     icon: 'https://example.com/icons/caixaforum.png',
     isActive: true
@@ -255,7 +255,7 @@ const seedMonuments = [
     city: 'Madrid',
     location: {
       type: 'Point',
-      coordinates: [40.419240, -3.691840]
+      coordinates: [-3.691840, 40.419240]
     },
     icon: 'https://example.com/icons/palacio_linares.png',
     isActive: true
@@ -265,7 +265,7 @@ const seedMonuments = [
     city: 'Madrid',
     location: {
       type: 'Point',
-      coordinates: [40.416275, -3.712312]
+      coordinates: [-3.712312, 40.416275]
     },
     icon: 'https://example.com/icons/plaza_oriente.png',
     isActive: true
@@ -275,7 +275,7 @@ const seedMonuments = [
     city: 'Madrid',
     location: {
       type: 'Point',
-      coordinates: [40.420556, -3.688333]
+      coordinates: [-3.688333, 40.420556]
     },
     icon: 'https://example.com/icons/museo_cera.png',
     isActive: true
@@ -285,7 +285,7 @@ const seedMonuments = [
     city: 'Madrid',
     location: {
       type: 'Point',
-      coordinates: [40.401945, -3.691945]
+      coordinates: [-3.691945, 40.401945]
     },
     icon: 'https://example.com/icons/museo_ferrocarril.png',
     isActive: true
@@ -295,7 +295,7 @@ const seedMonuments = [
     city: 'Madrid',
     location: {
       type: 'Point',
-      coordinates: [40.406495, -3.690641]
+      coordinates: [-3.690641, 40.406495]
     },
     icon: 'https://example.com/icons/atocha.png',
     isActive: true
@@ -305,7 +305,7 @@ const seedMonuments = [
     city: 'Madrid',
     location: {
       type: 'Point',
-      coordinates: [40.428152, -3.710494]
+      coordinates: [-3.710494, 40.428152]
     },
     icon: 'https://example.com/icons/conde_duque.png',
     isActive: true

@@ -71,21 +71,40 @@ const deactivateMonument = async (req, res) => {
 };
 
 const captureMonument = async (req, res) => {
-  const { monumentId } = req.body;
-  const userId = req.user.id;
-
   try {
-    const result = await monumentService.captureMonument(monumentId, userId);
-    res.status(200).json({ message: 'Monument captured', monument: result });
+    const { monumentId } = req.body;
+    const userId = req.user.id;
+    const capturedMonument = await monumentService.captureMonument(userId, monumentId);
+    res.json({ success: true, monument: capturedMonument });
   } catch (error) {
-    console.error('Error capturing monument:', error);
-    res.status(500).json({ message: 'Internal server error' });
+    res.status(400).json({ success: false, message: error.message });
+  }
+};
+const getAvailableMonuments = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const monuments = await monumentService.getAvailableMonuments(userId);
+    res.json(monuments);
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+const getCapturedMonuments = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const monuments = await monumentService.getCapturedMonuments(userId);
+    res.json(monuments);
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
   }
 };
 
 module.exports = {
   getAllMonuments,
   getMonumentByName,
+  getAvailableMonuments,
+  getCapturedMonuments,
   createMonument,
   updateMonument,
   deactivateMonument,

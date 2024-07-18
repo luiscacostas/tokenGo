@@ -20,7 +20,7 @@ const Home = () => {
     const fetchMonuments = async () => {
       console.log('Fetching monuments from server...');
       try {
-        const response = await fetch('https://tokengo-z0d3.onrender.com/api/monuments', {
+        const response = await fetch('https://tokengo-z0d3.onrender.com/api/monuments/available', {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
@@ -33,8 +33,8 @@ const Home = () => {
         console.log('Data fetched from server:', data);
 
         const availableMonuments = data.map(monument => ({
-          lat: monument.location.coordinates[0],
-          lon: monument.location.coordinates[1],
+          lat: monument.location.coordinates[1],
+          lon: monument.location.coordinates[0],
           name: monument.name,
           id: monument._id,
         }));
@@ -99,14 +99,16 @@ const Home = () => {
           100 
         );
 
-        if (isWithinRadius) {
+        if (isWithinRadius && !capturedMonuments.some(m => m.id === place.id)) {
           captureMonument(place.id);
         }
       });
     };
 
-    checkProximity();
-  }, [locations, placesCoords]);
+    if (locations.length > 0) {
+      checkProximity();
+    }
+  }, [locations, placesCoords, capturedMonuments]);
 
   const captureMonument = async (monumentId) => {
     try {
@@ -129,8 +131,11 @@ const Home = () => {
 
       setCapturedMonuments((prevMonuments) => [...prevMonuments, data.monument]);
       setPlacesCoords((prevCoords) => prevCoords.filter(monument => monument.id !== monumentId));
+
+      // Notificar al usuario
+      alert(`¡Has capturado el monumento ${data.monument.name}!`);
     } catch (error) {
-      console.error('Error capturing monuments:', error);
+      console.error('Error capturing monument:', error);
       alert(`Error capturing monument: ${error.message}`);
     }
   };
