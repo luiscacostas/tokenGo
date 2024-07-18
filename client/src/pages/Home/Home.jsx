@@ -33,16 +33,16 @@ const Home = () => {
         const data = await response.json();
         console.log("Data fetched from server:", data);
 
-        const availableMonuments = data.filter(monument => !monument.isCaptured).map(monument => ({
-          lat: monument.location.coordinates[0],
-          lon: monument.location.coordinates[1],
+        const availableMonuments = data.availableMonuments.map(monument => ({
+          lat: monument.location.coordinates[1],
+          lon: monument.location.coordinates[0],
           name: monument.name,
           id: monument._id,
         }));
 
-        const capturedMonuments = data.filter(monument => monument.isCaptured).map(monument => ({
-          lat: monument.location.coordinates[0],
-          lon: monument.location.coordinates[1],
+        const capturedMonuments = data.capturedMonuments.map(monument => ({
+          lat: monument.location.coordinates[1],
+          lon: monument.location.coordinates[0],
           name: monument.name,
           id: monument._id,
         }));
@@ -146,8 +146,8 @@ const Home = () => {
     setPlacesCoords((prevCoords) => [
       ...prevCoords,
       {
-        lat: newMonument.location.coordinates[0],
-        lon: newMonument.location.coordinates[1],
+        lat: newMonument.location.coordinates[1],
+        lon: newMonument.location.coordinates[0],
         name: newMonument.name,
         id: newMonument._id
       }

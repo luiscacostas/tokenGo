@@ -105,13 +105,16 @@ const captureMonument = async (monumentId, userId) => {
 
 const getMonumentsForUser = async (userId) => {
   const user = await User.findById(userId).populate('tokens.monument_id');
-  const capturedMonumentIds = user.tokens.map(token => token.monument_id._id.toString());
-  const allMonuments = await Monument.find();
 
-  return allMonuments.map(monument => ({
-    ...monument._doc,
-    isCaptured: capturedMonumentIds.includes(monument._id.toString())
-  }));
+  if (!user) {
+    throw new Error('User not found');
+  }
+
+  const capturedMonumentIds = user.tokens.map(token => token.monument_id._id);
+  const availableMonuments = await Monument.find({ _id: { $nin: capturedMonumentIds } });
+  const capturedMonuments = await Monument.find({ _id: { $in: capturedMonumentIds } });
+
+  return { availableMonuments, capturedMonuments };
 };
 
 

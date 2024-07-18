@@ -10,7 +10,7 @@ const Register = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('https://tokengo-z0d3.onrender.com/api/auth/register', {
+      const response = await fetch('https://agile-vitality-tokengo.up.railway.app/api/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -1,10 +1,11 @@
 const monumentService = require('../services/monument.services');
 
+
 const getAllMonuments = async (req, res) => {
-  const userId = req.user.id;
   try {
-    const monuments = await monumentService.getAllMonuments(userId);
-    res.status(200).json(monuments);
+    const userId = req.user.id;
+    const { availableMonuments, capturedMonuments } = await monumentService.getMonumentsForUser(userId);
+    res.status(200).json({ availableMonuments, capturedMonuments });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -49,14 +50,18 @@ const updateMonument = async (req, res) => {
   }
 };
 
-const getMonumentsForUser = async (req, res) => {
-  try {
-    const userId = req.user.id;
-    const monuments = await monumentService.getMonumentsForUser(userId);
-    res.status(200).json(monuments);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+const getMonumentsForUser = async (userId) => {
+  const user = await User.findById(userId).populate('tokens.monument_id');
+
+  if (!user) {
+    throw new Error('User not found');
   }
+
+  const capturedMonumentIds = user.tokens.map(token => token.monument_id._id);
+  const availableMonuments = await Monument.find({ _id: { $nin: capturedMonumentIds } });
+  const capturedMonuments = await Monument.find({ _id: { $in: capturedMonumentIds } });
+
+  return { availableMonuments, capturedMonuments };
 };
 
 const desactivateMonument = async (req, res) => {
