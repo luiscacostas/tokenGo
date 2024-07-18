@@ -15,6 +15,7 @@ const Home = () => {
   const { token } = useContext(AuthContext);
   const [tracking, setTracking] = useState(false);
   const [watchId, setWatchId] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchMonuments = async () => {
@@ -40,8 +41,10 @@ const Home = () => {
         }));
 
         setPlacesCoords(availableMonuments);
+        setLoading(false);
       } catch (error) {
         console.error('Error fetching monuments:', error);
+        setLoading(false);
       }
     };
 
@@ -94,7 +97,7 @@ const Home = () => {
         const isWithinRadius = isPointWithinRadius(
           { latitude: currentLocation.latitude, longitude: currentLocation.longitude },
           { latitude: place.lat, longitude: place.lon },
-          100
+          100 
         );
 
         if (isWithinRadius) {
@@ -154,17 +157,21 @@ const Home = () => {
       <button onClick={toggleTracking}>
         {tracking ? 'Detener seguimiento' : 'Iniciar seguimiento'}
       </button>
-      <Places setPlacesCoords={setPlacesCoords} />
-      <Map locations={locations} placesCoords={placesCoords} />
-      <FormMonument onMonumentAdded={handleMonumentAdded} />
-      <div>
-        <h3>Captured Monuments:</h3>
-        <ul>
-          {capturedMonuments.map((monument, index) => (
-            <li key={index}>{monument.name}</li>
-          ))}
-        </ul>
-      </div>
+      {loading ? <div>Loading map...</div> : (
+        <>
+          <Places setPlacesCoords={setPlacesCoords} />
+          <Map locations={locations} placesCoords={placesCoords} />
+          <FormMonument onMonumentAdded={handleMonumentAdded} />
+          <div>
+            <h3>Captured Monuments:</h3>
+            <ul>
+              {capturedMonuments.map((monument, index) => (
+                <li key={index}>{monument.name}</li>
+              ))}
+            </ul>
+          </div>
+        </>
+      )}
     </div>
   );
 };
