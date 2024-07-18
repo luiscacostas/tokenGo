@@ -5,6 +5,7 @@ const cors = require('cors');
 const http = require('http');
 const socketIo = require('socket.io');
 const path = require('path');
+const monumentRoutes = require('./routes/monument.routes'); 
 
 connectToDatabase();
 
@@ -36,7 +37,7 @@ io.on('connection', (socket) => {
 // Routes
 app.use('/api/users', require('./routes/user.routes'));
 app.use('/api/monuments', require('./routes/monument.routes'));
-app.use('/api/routes', require('./routes/routes.routes'));
+app.use('/api', monumentRoutes);
 app.use('/api/auth', require('./routes/auth.routes.js'));
 
 app.use(express.static(path.join(__dirname, 'client/build')));

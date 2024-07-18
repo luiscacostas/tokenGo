@@ -6,7 +6,7 @@ import FormMonument from '../../components/FormMonument';
 import { isPointWithinRadius } from 'geolib';
 import AuthContext from '../../context/AuthContext';
 
-const socket = io('https://agile-vitality-tokengo.up.railway.app/');
+const socket = io('https://tokengo-z0d3.onrender.com/');
 
 const Home = () => {
   const [locations, setLocations] = useState([]);
@@ -18,9 +18,10 @@ const Home = () => {
 
   useEffect(() => {
     const fetchMonuments = async () => {
+      console.log(token)
       try {
         console.log("Fetching monuments from server...");
-        const response = await fetch('https://agile-vitality-tokengo.up.railway.app/api/monuments', {
+        const response = await fetch('https://tokengo-z0d3.onrender.com/api/monuments', {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
@@ -34,15 +35,15 @@ const Home = () => {
         console.log("Data fetched from server:", data);
 
         const availableMonuments = data.availableMonuments.map(monument => ({
-          lat: monument.location.coordinates[1], // latitud en el índice 1
-          lon: monument.location.coordinates[0], // longitud en el índice 0
+          lat: monument.location.coordinates[1], 
+          lon: monument.location.coordinates[0],
           name: monument.name,
           id: monument._id,
         }));
 
         const capturedMonuments = data.capturedMonuments.map(monument => ({
-          lat: monument.location.coordinates[1], // latitud en el índice 1
-          lon: monument.location.coordinates[0], // longitud en el índice 0
+          lat: monument.location.coordinates[1], 
+          lon: monument.location.coordinates[0], 
           name: monument.name,
           id: monument._id,
         }));
@@ -117,7 +118,7 @@ const Home = () => {
 
   const captureMonument = async (monumentId) => {
     try {
-      const response = await fetch('https://agile-vitality-tokengo.up.railway.app/api/monuments/capture', {
+      const response = await fetch('https://tokengo-z0d3.onrender.com/api/monuments/capture', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -6,8 +6,6 @@ const url = process.env.MONGO_URI || "mongodb://localhost:27017/test";
 const connectToDatabase = async () => {
   try {
     await mongoose.connect(url, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
       serverSelectionTimeoutMS: 5000,
       socketTimeoutMS: 45000,
     });

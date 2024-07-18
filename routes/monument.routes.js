@@ -2,19 +2,17 @@ const express = require('express');
 const router = express.Router();
 const monumentController = require('../controllers/monument.controllers');
 const authMiddleware = require('../middlewares/auth');
-const { createMonumentValidation } = require('../validators/monument.validators');
-const validate = require('../middlewares/validate');
 
-router.get('/', authMiddleware, monumentController.getAllMonuments);
+router.get('/monuments', authMiddleware, monumentController.getAllMonuments);
 
-router.get('/:name', authMiddleware, monumentController.getMonumentByName);
+router.get('/monuments/:name', monumentController.getMonumentByName);
 
-router.post('/capture', authMiddleware, monumentController.captureMonument);
+router.post('/monuments', authMiddleware, monumentController.createMonument);
 
-router.post('/add', authMiddleware, monumentController.createMonument);
+router.put('/monuments/:monumentId', authMiddleware, monumentController.updateMonument);
 
-router.put('/:monumentId', authMiddleware, monumentController.updateMonument);
+router.delete('/monuments/:monumentId', authMiddleware, monumentController.deactivateMonument);
 
-router.delete('/desactivate/:monumentId', authMiddleware, monumentController.desactivateMonument);
+router.post('/monuments/capture', authMiddleware, monumentController.captureMonument);
 
 module.exports = router;

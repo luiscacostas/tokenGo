@@ -6,14 +6,10 @@ const {registerValidation, loginValidation} = require('../validators/auth.valida
 
 router.post(
     '/register',
-    registerValidation,
-    validate,
     authController.register);
 
 router.post(
     '/login',
-    loginValidation,
-    validate, 
     authController.login);
 
 module.exports = router;

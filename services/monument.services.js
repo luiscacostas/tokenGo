@@ -1,15 +1,35 @@
+const mongoose = require('mongoose');
 const Monument = require('../models/monument.models');
 const User = require('../models/user.models');
 
+const validateObjectId = (id) => {
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    throw new Error('Invalid ID');
+  }
+};
+
+const findUserById = async (userId) => {
+  validateObjectId(userId);
+  const user = await User.findById(userId);
+  if (!user) {
+    throw new Error('User not found');
+  }
+  return user;
+};
+
+const findMonumentById = async (monumentId) => {
+  validateObjectId(monumentId);
+  const monument = await Monument.findById(monumentId);
+  if (!monument) {
+    throw new Error('Monument not found');
+  }
+  return monument;
+};
+
 const getAllMonuments = async (userId) => {
   try {
-    const user = await User.findById(userId);
-    if (!user) {
-      throw new Error('User not found');
-    }
-
+    const user = await findUserById(userId);
     const capturedMonumentIds = user.tokens.map(token => token.monument_id.toString());
-
     const allMonuments = await Monument.find();
     const availableMonuments = allMonuments.filter(monument => !capturedMonumentIds.includes(monument._id.toString()));
     const capturedMonuments = allMonuments.filter(monument => capturedMonumentIds.includes(monument._id.toString()));
@@ -68,7 +88,7 @@ const updateMonument = async (monumentId, updateData) => {
   }
 };
 
-const desactivateMonument = async (monumentId) => {
+const deactivateMonument = async (monumentId) => {
   try {
     const updatedMonument = await Monument.findByIdAndUpdate(monumentId, { isActive: false }, { new: true });
     if (!updatedMonument) {
@@ -82,39 +102,40 @@ const desactivateMonument = async (monumentId) => {
 };
 
 const captureMonument = async (monumentId, userId) => {
-  const monument = await Monument.findById(monumentId);
-  if (!monument) {
-    throw new Error('Monument not found');
+  try {
+    const monument = await findMonumentById(monumentId);
+    const user = await findUserById(userId);
+
+    const alreadyCaptured = user.tokens.some(token => token.monument_id.toString() === monumentId);
+    if (alreadyCaptured) {
+      throw new Error('Monument already captured');
+    }
+
+    user.tokens.push({ monument_id: monumentId, collected_at: new Date() });
+    await user.save();
+
+    return monument;
+  } catch (error) {
+    console.error('Error al capturar el monumento:', error);
+    throw new Error('Error al capturar el monumento');
   }
-
-  const user = await User.findById(userId);
-  if (!user) {
-    throw new Error('User not found');
-  }
-
-  const alreadyCaptured = user.tokens.some(token => token.monument_id.toString() === monumentId);
-  if (alreadyCaptured) {
-    throw new Error('Monument already captured');
-  }
-
-  user.tokens.push({ monument_id: monumentId, collected_at: new Date() });
-  await user.save();
-
-  return monument;
 };
 
 const getMonumentsForUser = async (userId) => {
-  const user = await User.findById(userId).populate('tokens.monument_id');
+  try {
+    const user = await findUserById(userId).populate('tokens.monument_id');
+    const capturedMonumentIds = user.tokens.map(token => token.monument_id._id);
+    
+    const [availableMonuments, capturedMonuments] = await Promise.all([
+      Monument.find({ _id: { $nin: capturedMonumentIds } }),
+      Monument.find({ _id: { $in: capturedMonumentIds } })
+    ]);
 
-  if (!user) {
-    throw new Error('User not found');
+    return { availableMonuments, capturedMonuments };
+  } catch (error) {
+    console.error('Error al obtener los monumentos para el usuario:', error);
+    throw new Error('Error al obtener los monumentos para el usuario');
   }
-
-  const capturedMonumentIds = user.tokens.map(token => token.monument_id._id);
-  const availableMonuments = await Monument.find({ _id: { $nin: capturedMonumentIds } });
-  const capturedMonuments = await Monument.find({ _id: { $in: capturedMonumentIds } });
-
-  return { availableMonuments, capturedMonuments };
 };
 
 module.exports = {
@@ -123,6 +144,6 @@ module.exports = {
   getMonumentsForUser,
   createMonument,
   updateMonument,
-  desactivateMonument,
+  deactivateMonument,
   captureMonument
 };

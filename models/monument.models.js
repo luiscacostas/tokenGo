@@ -1,30 +1,32 @@
 const mongoose = require('mongoose');
 require('../config/db_mongo');
 
+const { Schema } = mongoose;
+
 const objSchema = {
   name: { 
     type: String, 
-    required: true 
+    required: [true, 'Name is required'] 
   },
   city: { 
     type: String, 
-    required: true 
+    required: [true, 'City is required'] 
   },
   location: {
     type: { 
       type: String, 
       enum: ['Point'], 
-      required: true 
+      required: [true, 'Location type is required'] 
     },
     coordinates: { 
       type: [Number], 
-      required: true,
+      required: [true, 'Coordinates are required'],
       unique: true 
     }
   },
   icon: { 
     type: String, 
-    required: true 
+    required: [true, 'Icon is required'] 
   },
   isActive: {
     type: Boolean,
@@ -32,11 +34,10 @@ const objSchema = {
   }
 };
 
-const MonumentSchema = mongoose.Schema(objSchema, { timestamps: true });
+const MonumentSchema = new Schema(objSchema, { timestamps: true });
 
 // Crear índice 2dsphere para consultas geoespaciales
 MonumentSchema.index({ location: '2dsphere' });
-MonumentSchema.index({ 'location.coordinates': 1 }, { unique: true });
 
 const Monument = mongoose.model('Monument', MonumentSchema);
 
