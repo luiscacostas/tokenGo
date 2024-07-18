@@ -1,9 +1,9 @@
 const monumentService = require('../services/monument.services');
-
+const User = require('../models/user.models');
 
 const getAllMonuments = async (req, res) => {
   try {
-    const userId = req.user.id;
+    const userId = req.user._id; // Asegúrate de que req.user está definido por el middleware
     const { availableMonuments, capturedMonuments } = await monumentService.getMonumentsForUser(userId);
     res.status(200).json({ availableMonuments, capturedMonuments });
   } catch (error) {
@@ -50,20 +50,6 @@ const updateMonument = async (req, res) => {
   }
 };
 
-const getMonumentsForUser = async (userId) => {
-  const user = await User.findById(userId).populate('tokens.monument_id');
-
-  if (!user) {
-    throw new Error('User not found');
-  }
-
-  const capturedMonumentIds = user.tokens.map(token => token.monument_id._id);
-  const availableMonuments = await Monument.find({ _id: { $nin: capturedMonumentIds } });
-  const capturedMonuments = await Monument.find({ _id: { $in: capturedMonumentIds } });
-
-  return { availableMonuments, capturedMonuments };
-};
-
 const desactivateMonument = async (req, res) => {
   const { monumentId } = req.params;
   try {
@@ -79,7 +65,7 @@ const desactivateMonument = async (req, res) => {
 
 const captureMonument = async (req, res) => {
   const { monumentId } = req.body;
-  const userId = req.user.id;
+  const userId = req.user._id;
 
   try {
     const result = await monumentService.captureMonument(monumentId, userId);
@@ -93,7 +79,6 @@ const captureMonument = async (req, res) => {
 module.exports = {
   getAllMonuments,
   getMonumentByName,
-  getMonumentsForUser,
   createMonument,
   updateMonument,
   desactivateMonument,

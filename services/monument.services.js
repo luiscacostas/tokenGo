@@ -41,7 +41,7 @@ const createMonument = async (name, city, latitude, longitude, icon) => {
       city,
       location: {
         type: 'Point',
-        coordinates: [latitude, longitude]
+        coordinates: [longitude, latitude]
       },
       icon
     };
@@ -117,7 +117,6 @@ const getMonumentsForUser = async (userId) => {
   return { availableMonuments, capturedMonuments };
 };
 
-
 module.exports = {
   getAllMonuments,
   getMonumentByName,
@@ -127,27 +126,3 @@ module.exports = {
   desactivateMonument,
   captureMonument
 };
-
-// const saveMonument = async () => {
-//   try {
-//     const monument = new Monument(newMonument);
-//     const savedMonument = await monument.save();
-//     console.log('Monument saved:', savedMonument);
-//   } catch (error) {
-//     console.error('Error saving monument:', error.message);
-//   } finally {
-//     mongoose.connection.close();
-//   }
-// };
-// saveMonument();
-
-
-// const newMonumentData = {
-//   name: "100 Montaditos",
-//   city: "Madrid",
-//   location: {
-//           type: 'Point',
-//           coordinates: [48.415363, -7.807398]
-//         },
-//   icon: "https://example.com/icons/plaza_mayor.png"
-// }

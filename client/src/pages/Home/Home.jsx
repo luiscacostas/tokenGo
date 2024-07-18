@@ -34,15 +34,15 @@ const Home = () => {
         console.log("Data fetched from server:", data);
 
         const availableMonuments = data.availableMonuments.map(monument => ({
-          lat: monument.location.coordinates[1],
-          lon: monument.location.coordinates[0],
+          lat: monument.location.coordinates[1], // latitud en el índice 1
+          lon: monument.location.coordinates[0], // longitud en el índice 0
           name: monument.name,
           id: monument._id,
         }));
 
         const capturedMonuments = data.capturedMonuments.map(monument => ({
-          lat: monument.location.coordinates[1],
-          lon: monument.location.coordinates[0],
+          lat: monument.location.coordinates[1], // latitud en el índice 1
+          lon: monument.location.coordinates[0], // longitud en el índice 0
           name: monument.name,
           id: monument._id,
         }));
