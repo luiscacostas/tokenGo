@@ -11,11 +11,10 @@ const FormMonument = ({ onMonumentAdded }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const newMonument = { name, city, latitude: parseFloat(latitude), longitude: parseFloat(longitude), icon };
 
     try {
-      const response = await fetch('https://agile-vitality-tokengo.up.railway.app/api/monuments/add', {
+      const response = await fetch('https://tokengo-z0d3.onrender.com/api/monuments/add', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
