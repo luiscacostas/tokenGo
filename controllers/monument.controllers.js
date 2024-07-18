@@ -2,11 +2,10 @@ const monumentService = require('../services/monument.services');
 
 const getAllMonuments = async (req, res) => {
   try {
-    const userId = req.user._id;
-    const { availableMonuments, capturedMonuments } = await monumentService.getMonumentsForUser(userId);
-    res.status(200).json({ availableMonuments, capturedMonuments });
+    const monuments = await monumentService.getAllMonuments();
+    res.status(200).json(monuments);
   } catch (error) {
-    console.error('Error al obtener todos los monumentos:', error);
+    console.error('Error fetching monuments:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 };
@@ -73,21 +72,16 @@ const deactivateMonument = async (req, res) => {
 
 const captureMonument = async (req, res) => {
   const { monumentId } = req.body;
-  const userId = req.user._id;
-
-  if (!monumentId) {
-    return res.status(400).json({ message: 'Monument ID es obligatorio' });
-  }
+  const userId = req.user.id;
 
   try {
     const result = await monumentService.captureMonument(monumentId, userId);
-    res.status(200).json({ message: 'Monumento capturado', monument: result });
+    res.status(200).json({ message: 'Monument captured', monument: result });
   } catch (error) {
-    console.error('Error al capturar el monumento:', error);
+    console.error('Error capturing monument:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
-
 module.exports = {
   getAllMonuments,
   getMonumentByName,

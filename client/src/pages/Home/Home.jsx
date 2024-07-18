@@ -18,38 +18,28 @@ const Home = () => {
 
   useEffect(() => {
     const fetchMonuments = async () => {
-      console.log(token)
+      console.log('Fetching monuments from server...');
       try {
-        console.log("Fetching monuments from server...");
         const response = await fetch('https://tokengo-z0d3.onrender.com/api/monuments', {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
         });
-
         if (!response.ok) {
           throw new Error('Error fetching monuments');
         }
 
         const data = await response.json();
-        console.log("Data fetched from server:", data);
+        console.log('Data fetched from server:', data);
 
-        const availableMonuments = data.availableMonuments.map(monument => ({
-          lat: monument.location.coordinates[1], 
+        const availableMonuments = data.map(monument => ({
+          lat: monument.location.coordinates[1],
           lon: monument.location.coordinates[0],
           name: monument.name,
           id: monument._id,
         }));
 
-        const capturedMonuments = data.capturedMonuments.map(monument => ({
-          lat: monument.location.coordinates[1], 
-          lon: monument.location.coordinates[0], 
-          name: monument.name,
-          id: monument._id,
-        }));
-
         setPlacesCoords(availableMonuments);
-        setCapturedMonuments(capturedMonuments);
       } catch (error) {
         console.error('Error fetching monuments:', error);
       }
@@ -104,7 +94,7 @@ const Home = () => {
         const isWithinRadius = isPointWithinRadius(
           { latitude: currentLocation.latitude, longitude: currentLocation.longitude },
           { latitude: place.lat, longitude: place.lon },
-          100 
+          100
         );
 
         if (isWithinRadius) {

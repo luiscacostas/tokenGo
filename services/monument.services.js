@@ -26,18 +26,13 @@ const findMonumentById = async (monumentId) => {
   return monument;
 };
 
-const getAllMonuments = async (userId) => {
+const getAllMonuments = async () => {
   try {
-    const user = await findUserById(userId);
-    const capturedMonumentIds = user.tokens.map(token => token.monument_id.toString());
-    const allMonuments = await Monument.find();
-    const availableMonuments = allMonuments.filter(monument => !capturedMonumentIds.includes(monument._id.toString()));
-    const capturedMonuments = allMonuments.filter(monument => capturedMonumentIds.includes(monument._id.toString()));
-
-    return { availableMonuments, capturedMonuments };
+    const monuments = await Monument.find();
+    return monuments;
   } catch (error) {
-    console.error('Error al obtener los monumentos:', error);
-    throw new Error('Error al obtener los monumentos');
+    console.error('Error fetching monuments:', error);
+    throw new Error('Internal server error');
   }
 };
 
@@ -102,23 +97,25 @@ const deactivateMonument = async (monumentId) => {
 };
 
 const captureMonument = async (monumentId, userId) => {
-  try {
-    const monument = await findMonumentById(monumentId);
-    const user = await findUserById(userId);
-
-    const alreadyCaptured = user.tokens.some(token => token.monument_id.toString() === monumentId);
-    if (alreadyCaptured) {
-      throw new Error('Monument already captured');
-    }
-
-    user.tokens.push({ monument_id: monumentId, collected_at: new Date() });
-    await user.save();
-
-    return monument;
-  } catch (error) {
-    console.error('Error al capturar el monumento:', error);
-    throw new Error('Error al capturar el monumento');
+  const monument = await Monument.findById(monumentId);
+  if (!monument) {
+    throw new Error('Monument not found');
   }
+
+  const user = await User.findById(userId);
+  if (!user) {
+    throw new Error('User not found');
+  }
+
+  const alreadyCaptured = user.tokens.some(token => token.monument_id.toString() === monumentId);
+  if (alreadyCaptured) {
+    throw new Error('Monument already captured');
+  }
+
+  user.tokens.push({ monument_id: monumentId, collected_at: new Date() });
+  await user.save();
+
+  return monument;
 };
 
 const getMonumentsForUser = async (userId) => {

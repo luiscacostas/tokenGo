@@ -3,7 +3,8 @@ const router = express.Router();
 const monumentController = require('../controllers/monument.controllers');
 const authMiddleware = require('../middlewares/auth');
 
-router.get('/', monumentController.getAllMonuments);
+router.get('/',monumentController.getAllMonuments);
+router.post('/capture', monumentController.captureMonument);
 
 router.get('/:name', monumentController.getMonumentByName);
 
@@ -13,6 +14,5 @@ router.put('/:monumentId', monumentController.updateMonument);
 
 router.delete('/:monumentId', monumentController.deactivateMonument);
 
-router.post('/capture', monumentController.captureMonument);
 
 module.exports = router;
