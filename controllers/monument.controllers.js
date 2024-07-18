@@ -82,7 +82,7 @@ const captureMonument = async (req, res) => {
 };
 const getAvailableMonuments = async (req, res) => {
   try {
-    const userId = req.user.id;
+    const userId = req.user._id;
     const monuments = await monumentService.getAvailableMonuments(userId);
     res.json(monuments);
   } catch (error) {

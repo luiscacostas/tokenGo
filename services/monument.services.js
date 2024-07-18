@@ -151,6 +151,9 @@ const getMonumentsForUser = async (userId) => {
 
 const getAvailableMonuments = async (userId) => {
   const user = await User.findById(userId);
+  if (!user) {
+    throw new Error('User not found');
+  }
   const capturedMonumentIds = user.tokens.map(token => token.monument_id);
   return await Monument.find({ 
     _id: { $nin: capturedMonumentIds },
