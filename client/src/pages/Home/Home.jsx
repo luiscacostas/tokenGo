@@ -17,6 +17,7 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log('Token being sent:', token);
     const fetchMonuments = async () => {
       console.log('Fetching monuments from server...');
       try {

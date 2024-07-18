@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import AuthContext from '../../context/AuthContext';
 
 const Login = ({ setIsLoggedIn }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('https://agile-vitality-tokengo.up.railway.app/api/auth/login', {
+      const response = await fetch('https://tokengo-z0d3.onrender.com/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -27,6 +29,7 @@ const Login = ({ setIsLoggedIn }) => {
       const data = await response.json();
       console.log('Login Exitoso:', data);
 
+      login(data.token)
       localStorage.setItem('token', data.token);
       setIsLoggedIn(true);
       navigate('/');

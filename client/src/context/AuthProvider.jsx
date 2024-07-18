@@ -5,7 +5,11 @@ const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem('token') || '');
 
   useEffect(() => {
-    localStorage.setItem('token', token);
+    if (token) {
+      localStorage.setItem('token', token);
+    } else {
+      localStorage.removeItem('token');
+    }
   }, [token]);
 
   const login = (newToken) => {
@@ -24,3 +28,5 @@ const AuthProvider = ({ children }) => {
 };
 
 export default AuthProvider;
+
+    
