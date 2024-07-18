@@ -59,11 +59,14 @@ const Places = ({ setPlacesCoords }) => {
 
         const limitedResults = filteredResults.slice(0, 30);
 
-        setPlacesCoords(limitedResults.map(feature => ({
-          lat: feature.geometry.coordinates[1],
-          lon: feature.geometry.coordinates[0],
-          name: feature.properties.name
-        })));
+        setPlacesCoords((prevCoords) => [
+          ...prevCoords,
+          ...limitedResults.map(feature => ({
+            lat: feature.geometry.coordinates[1],
+            lon: feature.geometry.coordinates[0],
+            name: feature.properties.name
+          }))
+        ]);
       } catch (error) {
         console.error('Error fetching data: ', error);
       }

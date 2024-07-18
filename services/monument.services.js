@@ -56,7 +56,7 @@ const createMonument = async (name, city, latitude, longitude, icon) => {
       city,
       location: {
         type: 'Point',
-        coordinates: [latitude, longitude]
+        coordinates: [longitude, latitude]
       },
       icon
     };

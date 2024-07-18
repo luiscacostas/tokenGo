@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import io from 'socket.io-client';
 import Map from '../../components/Map';
-import Places from '../../components/Places';
 import FormMonument from '../../components/FormMonument';
 import { isPointWithinRadius } from 'geolib';
 import AuthContext from '../../context/AuthContext';
@@ -34,8 +33,8 @@ const Home = () => {
         console.log('Data fetched from server:', data);
 
         const availableMonuments = data.map(monument => ({
-          lat: monument.location.coordinates[1],
-          lon: monument.location.coordinates[0],
+          lat: monument.location.coordinates[0],
+          lon: monument.location.coordinates[1],
           name: monument.name,
           id: monument._id,
         }));
@@ -159,7 +158,6 @@ const Home = () => {
       </button>
       {loading ? <div>Loading map...</div> : (
         <>
-          <Places setPlacesCoords={setPlacesCoords} />
           <Map locations={locations} placesCoords={placesCoords} />
           <FormMonument onMonumentAdded={handleMonumentAdded} />
           <div>
