@@ -17,17 +17,25 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    console.log('Token being sent:', token);
     const fetchMonuments = async () => {
       console.log('Fetching monuments from server...');
+      if (!token) {
+        console.log('No token available');
+        setLoading(false);
+        return;
+      }
       try {
+        console.log('Fetching monuments with token:', token);
         const response = await fetch('https://tokengo-z0d3.onrender.com/api/monuments/available', {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
         });
         if (!response.ok) {
-          throw new Error('Error fetching monuments');
+          const errorBody = await response.text();
+          console.error('Response status:', response.status);
+          console.error('Response body:', errorBody);
+          throw new Error(`Error fetching monuments: ${response.status} ${errorBody}`);
         }
 
         const data = await response.json();
@@ -113,6 +121,7 @@ const Home = () => {
 
   const captureMonument = async (monumentId) => {
     try {
+      console.log('Capturing monument with ID:', monumentId);
       const response = await fetch('https://tokengo-z0d3.onrender.com/api/monuments/capture', {
         method: 'POST',
         headers: {
@@ -123,8 +132,10 @@ const Home = () => {
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Error capturing monument');
+        const errorBody = await response.text();
+        console.error('Response status:', response.status);
+        console.error('Response body:', errorBody);
+        throw new Error(`Error capturing monument: ${response.status} ${errorBody}`);
       }
 
       const data = await response.json();

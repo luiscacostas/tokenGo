@@ -12,7 +12,11 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server)
 
-app.use(cors());
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
 app.use(express.json());
 
 const error404 = require('./middlewares/error404');

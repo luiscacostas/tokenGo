@@ -82,10 +82,11 @@ const captureMonument = async (req, res) => {
 };
 const getAvailableMonuments = async (req, res) => {
   try {
-    const userId = req.user._id;
-    const monuments = await monumentService.getAvailableMonuments(userId);
+    console.log('Getting available monuments for user:', req.user._id);
+    const monuments = await monumentService.getAvailableMonuments(req.user._id);
     res.json(monuments);
   } catch (error) {
+    console.error('Error in getAvailableMonuments:', error);
     res.status(500).json({ success: false, message: error.message });
   }
 };

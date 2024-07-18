@@ -5,6 +5,7 @@ const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem('token') || '');
 
   useEffect(() => {
+    console.log('Current token:', token);
     if (token) {
       localStorage.setItem('token', token);
     } else {
